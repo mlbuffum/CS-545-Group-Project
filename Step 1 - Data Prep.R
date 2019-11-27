@@ -17,6 +17,7 @@ library(fasttime)
 ## Set directories
 local.path <- "C:/Users/maggi/Documents/Masters - Local/CS 545/Group Project"
 rawdata.path <- file.path(local.path,"Raw Data")
+rData.path <- file.path(local.path,"R Data")
 
 
 ################################################################################
@@ -70,13 +71,13 @@ summary(missing.dat)
   # not include these in the analysis.
 
 ## Merge onto training data
-train_build.dat <- train.dat[building.dat,
-                             .(building_id,
-                               site_id,
-                               primary_use,
-                               square_feet,
-                               MeterType,
-                               DateTime,
+train_build.dat <- train.dat[building.dat   ,
+                             .(building_id  ,
+                               site_id      ,
+                               primary_use  ,
+                               square_feet  ,
+                               MeterType    ,
+                               DateTime     ,
                                meter_reading),
                              on="building_id"]
 
@@ -110,7 +111,7 @@ train_weather.dat <- merge(
   train_build.dat,
   weather.dat[,.(DateTime          ,
                  site_id           ,
-                 air_temperature  ,
+                 air_temperature   ,
                  dew_temperature   ,
                  sea_level_pressure,
                  wind_direction    ,
@@ -122,8 +123,11 @@ train_weather.dat <- merge(
 NROW(train_weather.dat)==NROW(train.dat)
 
 
+################################################################################
+##### Save Preliminary Data
+################################################################################
 
-
+saveRDS(train_weather.dat,file.path(rData.path,"merged_train.rds"))
 
 
 
